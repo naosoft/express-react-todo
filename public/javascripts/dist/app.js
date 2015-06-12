@@ -29038,9 +29038,19 @@ module.exports = React.createClass({displayName: "exports",
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var taskInput = React.findDOMNode(this.refs.task);
+    var taskValue = taskInput.value.trim();
+    this.props.onTodoSubmit({ task: taskValue });
+
+    taskInput.value = '';
+  },
   render: function () {
     return (
-      React.createElement("form", null
+      React.createElement("form", {onSubmit: this.handleSubmit}, 
+        React.createElement("input", {type: "text", placeholder: "What do you need to do?", ref: "task"}), 
+        React.createElement("input", {type: "submit", value: "Create"})
       )
     );
   }
@@ -29068,13 +29078,29 @@ module.exports = React.createClass({displayName: "exports",
       }
     });
   },
+  createTodo: function (todo) {
+    var todos = this.state.data;
+    todos.push(todo)
+    this.setState({data: todos}, function () {
+      $.ajax({
+        context: this,
+        url: '/todos',
+        dataType: 'JSON',
+        type: 'POST',
+        data: todo,
+        success: function () {
+          this.setState({data: todos});
+        }
+      });
+    });
+  },
   componentDidMount: function () {
     this.loadTodosFromServer();
   },
   render: function () {
     return (
       React.createElement("div", null, 
-        React.createElement(TodoForm, null), 
+        React.createElement(TodoForm, {onTodoSubmit: this.createTodo}), 
         React.createElement("ul", null, 
           this.state.data.map(function (todo) {
             return (

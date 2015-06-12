@@ -19,13 +19,29 @@ module.exports = React.createClass({
       }
     });
   },
+  createTodo: function (todo) {
+    var todos = this.state.data;
+    todos.push(todo)
+    this.setState({data: todos}, function () {
+      $.ajax({
+        context: this,
+        url: '/todos',
+        dataType: 'JSON',
+        type: 'POST',
+        data: todo,
+        success: function () {
+          this.setState({data: todos});
+        }
+      });
+    });
+  },
   componentDidMount: function () {
     this.loadTodosFromServer();
   },
   render: function () {
     return (
       <div>
-        <TodoForm />
+        <TodoForm onTodoSubmit={this.createTodo} />
         <ul>
           {this.state.data.map(function (todo) {
             return (
