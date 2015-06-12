@@ -29053,6 +29053,11 @@ var Todo = require('./Todo.jsx');
 var $ = jQuery = require('jquery');
 
 module.exports = React.createClass({displayName: "exports",
+  getInitialState: function () {
+    return {
+      data: []
+    }
+  },
   loadTodosFromServer: function () {
     $.ajax({
       context: this,
