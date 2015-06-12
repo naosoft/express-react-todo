@@ -20,8 +20,19 @@ router.route('/')
         res.send(err);
       }
 
-      res.status(201).json({ message: 'created' })
+      res.status(201).json({ message: 'created' });
     });
+  });
+
+router.route('/:id')
+  .patch(function (req, res) {
+    Todo.update({_id: req.params.id}, {done: req.body.done}, function (err, raw) {
+      if (err) {
+        res.send(err);
+      }
+
+      res.status(200).json({ message: 'updated ' + raw.nModified + ' row(s)' });
+    })
   });
 
 module.exports = router;

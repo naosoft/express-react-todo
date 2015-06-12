@@ -1,6 +1,7 @@
 var utils = require('./utils');
 var request = require('supertest');
 var mongoose = require('mongoose');
+var Todo = require('../app/models/todo.js');
 var app = require('../app.js');
 
 describe('GET /todos', function () {
@@ -15,7 +16,7 @@ describe('GET /todos', function () {
 
 describe('POST /todo', function () {
   it('returns 201 status', function (done) {
-    var todo = { task: 'Sell books', done: false }
+    var todo = { task: 'Sell books', done: false };
 
     request(app)
       .post('/todos')
@@ -23,3 +24,15 @@ describe('POST /todo', function () {
       .expect(201, /created/, done)
   });
 });
+
+describe('PATCH /todo', function () {
+  it('returns 200 status', function (done) {
+    var todo = new Todo({ task: 'Sell software', done: false });
+    todo.save(function (err, todo) {
+      request(app)
+        .patch('/todos/' + todo.id)
+        .send({done: true})
+        .expect(200, /1 row/, done);
+    })
+  })
+})
