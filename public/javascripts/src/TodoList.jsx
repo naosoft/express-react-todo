@@ -29,7 +29,7 @@ module.exports = React.createClass({
         <ul>
           {this.state.data.map(function (todo) {
             return (
-              <Todo task={todo.task} done={todo.done} />
+              <Todo key={todo._id} task={todo.task} done={todo.done} />
             );
           })}
         </ul>

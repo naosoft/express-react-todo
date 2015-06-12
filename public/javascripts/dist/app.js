@@ -29078,7 +29078,7 @@ module.exports = React.createClass({displayName: "exports",
         React.createElement("ul", null, 
           this.state.data.map(function (todo) {
             return (
-              React.createElement(Todo, {task: todo.task, done: todo.done})
+              React.createElement(Todo, {key: todo._id, task: todo.task, done: todo.done})
             );
           })
         )
