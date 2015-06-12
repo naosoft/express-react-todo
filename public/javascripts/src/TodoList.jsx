@@ -1,25 +1,21 @@
 var React = require('react');
 var TodoForm = require('./TodoForm.jsx');
 var Todo = require('./Todo.jsx');
+var $ = jQuery = require('jquery');
 
 module.exports = React.createClass({
-  getInitialState: function () {
-    return {
-      data: [
-        {
-          task: 'buy milk',
-          done: false
-        },
-        {
-          task: 'solve rubics cube',
-          done: true
-        },
-        {
-          task: 'read newspaper',
-          done: false
-        }
-      ]
-    }
+  loadTodosFromServer: function () {
+    $.ajax({
+      context: this,
+      url: '/todos',
+      dataType: 'JSON',
+      success: function (data) {
+        this.setState({data: data})
+      }
+    });
+  },
+  componentDidMount: function () {
+    this.loadTodosFromServer();
   },
   render: function () {
     return (
