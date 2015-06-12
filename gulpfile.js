@@ -7,7 +7,7 @@ gulp.task('js', function () {
   browserify('public/javascripts/src/app.jsx')
     .transform(reactify)
     .bundle()
-    .pipe(source('app.jsx'))
+    .pipe(source('app.js'))
     .pipe(gulp.dest('public/javascripts/dist'))
 });
 
