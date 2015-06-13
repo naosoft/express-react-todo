@@ -5,9 +5,12 @@ module.exports = React.createClass({
     e.preventDefault();
     var taskInput = React.findDOMNode(this.refs.task);
     var taskValue = taskInput.value.trim();
-    this.props.onTodoSubmit({ task: taskValue });
+    if (taskValue !== '') {
+      this.props.onTodoSubmit({ task: taskValue });
 
-    taskInput.value = '';
+      taskInput.value = '';
+    }
+
   },
   render: function () {
     return (

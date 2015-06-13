@@ -13,6 +13,11 @@ router.route('/')
     })
   })
   .post(function (req, res) {
+    if (req.body.task == '') {
+      res.status(400);
+      return false;
+    }
+
     var todo = new Todo({ task: req.body.task });
 
     todo.save(function (err) {
