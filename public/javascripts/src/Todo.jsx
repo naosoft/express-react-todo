@@ -8,10 +8,8 @@ module.exports = React.createClass({
   render: function () {
     return (
       <li>
+        <input type="checkbox" onClick={this.toggleTodo} />
         <span className={this.props.done ? "done" : ""}>{this.props.task}</span>
-        <input type="checkbox" onClick={this.toggleTodo} /> Done
-
-        {this.props.done.toString()}
       </li>
     );
   }

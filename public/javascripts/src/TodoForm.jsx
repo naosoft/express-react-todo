@@ -11,7 +11,7 @@ module.exports = React.createClass({
   },
   render: function () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="todo-input">
         <input type="text" placeholder="What do you need to do?" ref="task" />
         <input type="submit" value="Create" />
       </form>

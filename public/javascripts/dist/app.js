@@ -29031,10 +29031,8 @@ module.exports = React.createClass({displayName: "exports",
   render: function () {
     return (
       React.createElement("li", null, 
-        React.createElement("span", {className: this.props.done ? "done" : ""}, this.props.task), 
-        React.createElement("input", {type: "checkbox", onClick: this.toggleTodo}), " Done", 
-
-        this.props.done.toString()
+        React.createElement("input", {type: "checkbox", onClick: this.toggleTodo}), 
+        React.createElement("span", {className: this.props.done ? "done" : ""}, this.props.task)
       )
     );
   }
@@ -29054,7 +29052,7 @@ module.exports = React.createClass({displayName: "exports",
   },
   render: function () {
     return (
-      React.createElement("form", {onSubmit: this.handleSubmit}, 
+      React.createElement("form", {onSubmit: this.handleSubmit, className: "todo-input"}, 
         React.createElement("input", {type: "text", placeholder: "What do you need to do?", ref: "task"}), 
         React.createElement("input", {type: "submit", value: "Create"})
       )
