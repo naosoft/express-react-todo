@@ -35,6 +35,24 @@ module.exports = React.createClass({
       });
     });
   },
+  toggleTodo: function (todo) {
+    var todos = this.state.data;
+    var index = todos.map(function (item) {
+      return item._id
+    }).indexOf(todo._id);
+    todos[index] = todo;
+
+    $.ajax({
+      context: this,
+      url: '/todos/' + todo._id,
+      type: 'PATCH',
+      dateType: 'JSON',
+      data: {done: todo.done},
+      success: function () {
+        this.setState({data: todos});
+      }
+    });
+  },
   componentDidMount: function () {
     this.loadTodosFromServer();
   },
@@ -43,11 +61,18 @@ module.exports = React.createClass({
       <div>
         <TodoForm onTodoSubmit={this.createTodo} />
         <ul>
-          {this.state.data.map(function (todo) {
+          {this.state.data.map(function (todo, i) {
+            var boundToggle = this.toggleTodo;
             return (
-              <Todo key={todo._id} task={todo.task} done={todo.done} />
+              <Todo
+                key={todo._id}
+                id={todo._id}
+                task={todo.task}
+                done={todo.done}
+                onTodoToggle={boundToggle}
+               />
             );
-          })}
+          }, this)}
         </ul>
       </div>
     );

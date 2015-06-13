@@ -29024,15 +29024,21 @@ module.exports = require('./lib/React');
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
+  toggleTodo: function () {
+    var todo = { _id: this.props.id, task: this.props.task, done: !this.props.done }
+    this.props.onTodoToggle(todo);
+  },
   render: function () {
     return (
       React.createElement("li", null, 
-        React.createElement("span", null, this.props.task), 
-        React.createElement("span", null, this.props.done)
+        React.createElement("span", {className: this.props.done ? "done" : ""}, this.props.task), 
+        React.createElement("input", {type: "checkbox", onClick: this.toggleTodo}), " Done", 
+
+        this.props.done.toString()
       )
     );
   }
-})
+});
 
 },{"react":157}],159:[function(require,module,exports){
 var React = require('react');
@@ -29094,6 +29100,24 @@ module.exports = React.createClass({displayName: "exports",
       });
     });
   },
+  toggleTodo: function (todo) {
+    var todos = this.state.data;
+    var index = todos.map(function (item) {
+      return item._id
+    }).indexOf(todo._id);
+    todos[index] = todo;
+
+    $.ajax({
+      context: this,
+      url: '/todos/' + todo._id,
+      type: 'PATCH',
+      dateType: 'JSON',
+      data: {done: todo.done},
+      success: function () {
+        this.setState({data: todos});
+      }
+    });
+  },
   componentDidMount: function () {
     this.loadTodosFromServer();
   },
@@ -29102,11 +29126,18 @@ module.exports = React.createClass({displayName: "exports",
       React.createElement("div", null, 
         React.createElement(TodoForm, {onTodoSubmit: this.createTodo}), 
         React.createElement("ul", null, 
-          this.state.data.map(function (todo) {
+          this.state.data.map(function (todo, i) {
+            var boundToggle = this.toggleTodo;
             return (
-              React.createElement(Todo, {key: todo._id, task: todo.task, done: todo.done})
+              React.createElement(Todo, {
+                key: todo._id, 
+                id: todo._id, 
+                task: todo.task, 
+                done: todo.done, 
+                onTodoToggle: boundToggle}
+               )
             );
-          })
+          }, this)
         )
       )
     );
